@@ -26,7 +26,7 @@ alpha_to_int = {    #dict to help convert intput to check
 
 alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','X','Y','Z']
 
-size_of_board = 3
+size_of_board = 6
 
 carrier = 5
 battleship = 4
@@ -131,6 +131,7 @@ def update_board(arr: list, row: int, col: int, ships: list) -> None:
     if row < 0 or col < 0 or row > len(arr) or arr > len(arr) or not ships:
         print("error in update_board. Error with Inputs")
         return
+
 
 def input_board(col, row, felid) -> bool:
     if col not in alpha_to_int.keys() or int(row) < 0:
