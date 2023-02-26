@@ -1,4 +1,5 @@
 #api.py
+import copy
 """
 API for the classic battleship game. The first block of code is meant for the 
 declearation of global constantants that are used in the main testing and or
