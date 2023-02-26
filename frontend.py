@@ -129,3 +129,7 @@ def main():
 
 if __name__ == '__main__':
 	main()
+
+#TODO Add sink functionality!
+#TODO Add comments to code
+#TODO Add Hit functionality and colors.
