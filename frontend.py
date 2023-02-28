@@ -1,7 +1,8 @@
 import tkinter as tk
+import tkinter.messagebox as messagebox
 import copy
 from api import size_of_board as sob
-from api import alpha
+from api import alpha, boat_names
 from api import all_ships as ships
 from api import initialize_battlefield, xrow_and_col, emptyBoard
 
@@ -29,6 +30,8 @@ class TableButton(tk.Button):
 				row += 1
 
 def button_callback(button, label_text, arr, copies):
+	if arr[button.row][button.col] == 'X':	#already accounted for
+		return
 	copies.append(copy.deepcopy(arr))	#create a copy of the old map
 	arr[button.row][button.col] = 'X'
 	label_text.set(f"Button at row {button.row}, column {button.col} was clicked")
@@ -68,6 +71,16 @@ def create_table(root, sob, arr, copies):
 	
 	# Update the frame to get its current size
 	root.update()
+
+	list_frame = tk.Frame(root, width=400, height=len(ships) * 20)
+	list_frame.grid(row=1, column=sob+1, rowspan=sob+1, sticky='n')
+	label_list_ships = tk.Label(list_frame, text="List of ships Remaining")
+	label_list_ships.pack()
+	for ship in ships:
+		shp_label = tk.Label(list_frame, text=f"{boat_names[ship]} ({ship} cells)", width=15, height=1)
+		shp_label.pack()
+	root.update()
+	
 	label = tk.Label(root, textvariable=label_text, width = root.winfo_width(), height = 2, anchor="center", justify="center")
 	label.place(relx=0.5, rely=1.0, anchor="s", y=-55)
 
@@ -77,11 +90,13 @@ def create_table(root, sob, arr, copies):
 	hit_btn = tk.Button(btn_frame, text="HIT!", width = 10, height = 1, anchor="center", justify="center")
 	hit_btn.pack(side=tk.LEFT, padx=10)
 
-	sunk_btn = tk.Button(btn_frame, text="SUNK!", width = 10, height = 1, anchor="center", justify="center")
+	sunk_btn = tk.Button(btn_frame, command=lambda:sunk_ship(root, ships, arr), text="SUNK!", width = 10, height = 1, anchor="center", justify="center")
 	sunk_btn.pack(side=tk.LEFT, padx=10)
 
 	undo_btn = tk.Button(root, command=create_undo(root, arr, copies), text="UNDO", width = 10, height = 1, anchor="center", justify="center")
 	undo_btn.place(relx=0.5, rely=1.0, anchor="s", y=-5)
+	#print(f"{root.winfo_reqwidth()} + {root.winfo_reqwidth()}")
+	root.geometry(f"{root.winfo_reqwidth()}x{root.winfo_reqheight() + 100}")
 
 def create_undo(root, arr, copies):
     def callback():
@@ -102,14 +117,32 @@ def undo(master, arr, copies):
 		for j in range(len(arr[i])):
 			arr[i][j] = prev[i][j]
 
-	
 	tb = TableButton(master, 0, 0)
 	tb.button_list.pop()
 	tb.update_all_texts("", arr)
 
-	for all in copies:
-		print(all)
-		print()
+def sunk_ship(master, ships_remaining, arr):
+	def remove_ship(ship):
+		ships_remaining.remove(ship)
+		tb = TableButton(master, 0, 0)
+		tb.button_list.pop()
+		tb.update_all_texts("", arr)
+		popup.destroy()
+
+	popup = tk.Toplevel()
+	height = 25 + len(ships_remaining) * 30
+	popup.geometry(f"300x{height}")
+	popup.title("Sunk Ships")
+
+	label = tk.Label(popup, text="Choose what ship was sunk:", width=20)
+	label.pack()
+	popup.update()
+	for ship in ships_remaining:
+		button = tk.Button(popup, text=f"{boat_names[ship]} ({ship} cells)", command=lambda ship=ship: remove_ship(ship), width=15, height=1)
+		button.pack()
+	popup.update()
+	popup.geometry(f"{popup.winfo_reqwidth()}x{popup.winfo_reqheight()}")
+	popup.mainloop()
 
 
 def main():
@@ -130,6 +163,6 @@ def main():
 if __name__ == '__main__':
 	main()
 
-#TODO Add sink functionality!
+#TODO Add update list functionality
 #TODO Add comments to code
 #TODO Add Hit functionality and colors.

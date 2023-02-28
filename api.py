@@ -25,9 +25,18 @@ alpha_to_int = {    #dict to help convert intput to check
 	'L' : 11
 }
 
+boat_names = {
+    1 : "Suiciders",
+    2 : "Destroyer",
+    3 : "Cruiser",
+    4 : "Battleship",
+    5 : "Carrier",
+    6 : "Helicarrier"
+}
+
 alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','X','Y','Z']
 
-size_of_board = 6
+size_of_board = 10
 
 carrier = 5
 battleship = 4
