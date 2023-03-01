@@ -8,6 +8,7 @@ from api import initialize_battlefield, xrow_and_col, emptyBoard
 
 class TableButton(tk.Button):
 
+	#Used to iterate through the buttons easily
 	button_list = []
 
 	def __init__(self, master, row, col, *args, **kwargs):
@@ -19,6 +20,7 @@ class TableButton(tk.Button):
 	def set_text(self, text):
 		self.configure(text=text)
 
+	#Updates the text (and colour in the future of the buttons
 	def update_all_texts(self, text, arr):
 		row = 0
 		col = 0
@@ -29,6 +31,7 @@ class TableButton(tk.Button):
 				col = 0
 				row += 1
 
+#All the buttons call this function
 def button_callback(button, label_text, arr, copies):
 	if arr[button.row][button.col] == 'X':	#already accounted for
 		return
@@ -43,12 +46,7 @@ def button_callback(button, label_text, arr, copies):
 		print(all)
 		print()
 
-
-def create_button_callback(button, label_text, arr, copies):
-    def callback():
-        button_callback(button, label_text, arr, copies)
-    return callback
-
+#Inital call that creates and itilizes everything
 def create_table(root, sob, arr, copies):
 	label_text = tk.StringVar()
 	label_text.set("Click a button to see its row and column index")
@@ -66,7 +64,7 @@ def create_table(root, sob, arr, copies):
 				label.grid(row=row, column=col)
 			else:
 				button = TableButton(root, row-1, col-1, text=f"{arr[row-1][col-1]}")
-				button.config(command=create_button_callback(button, label_text, arr, copies), width=3, height=3)
+				button.config(command=lambda button=button, label_text=label_text, arr=arr, copies=copies: button_callback(button, label_text, arr, copies), width=3, height=3)
 				button.grid(row=row, column=col)
 	
 	# Update the frame to get its current size
@@ -93,16 +91,12 @@ def create_table(root, sob, arr, copies):
 	sunk_btn = tk.Button(btn_frame, command=lambda:sunk_ship(root, ships, arr), text="SUNK!", width = 10, height = 1, anchor="center", justify="center")
 	sunk_btn.pack(side=tk.LEFT, padx=10)
 
-	undo_btn = tk.Button(root, command=create_undo(root, arr, copies), text="UNDO", width = 10, height = 1, anchor="center", justify="center")
+	undo_btn = tk.Button(root, command=lambda:undo(root, arr, copies), text="UNDO", width = 10, height = 1, anchor="center", justify="center")
 	undo_btn.place(relx=0.5, rely=1.0, anchor="s", y=-5)
 	#print(f"{root.winfo_reqwidth()} + {root.winfo_reqwidth()}")
 	root.geometry(f"{root.winfo_reqwidth()}x{root.winfo_reqheight() + 100}")
 
-def create_undo(root, arr, copies):
-    def callback():
-        undo(root, arr, copies)
-    return callback
-
+#When the user presses undo the last version of the board will be inputed into frame
 def undo(master, arr, copies):
 	print("TEst", len(copies))
 
@@ -121,6 +115,7 @@ def undo(master, arr, copies):
 	tb.button_list.pop()
 	tb.update_all_texts("", arr)
 
+#When the user shinks a ship they press this button
 def sunk_ship(master, ships_remaining, arr):
 	def remove_ship(ship):
 		ships_remaining.remove(ship)
@@ -144,7 +139,7 @@ def sunk_ship(master, ships_remaining, arr):
 	popup.geometry(f"{popup.winfo_reqwidth()}x{popup.winfo_reqheight()}")
 	popup.mainloop()
 
-
+#Main of program. Starts the window and code.
 def main():
 	all_battlefields = []
 
