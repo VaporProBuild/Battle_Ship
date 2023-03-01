@@ -131,11 +131,13 @@ def print_battlefield(arr):
         print("|")
     print()
 
-def emptyBoard(arr):
+def emptyBoard(arr, ships_left):
     for i in range(len(arr)):
         for j in range(len(arr[i])):
             if arr[i][j] not in ['H', 'M', 'X', 'x']:
                 arr[i][j] = 0
+    
+    xrow_and_col(arr, ships_left)
 
 def update_board(arr: list, row: int, col: int, ships: list) -> None:
     if row < 0 or col < 0 or row > len(arr) or arr > len(arr) or not ships:
@@ -168,7 +170,7 @@ def main():
         print(col, row)
         input_board(col, row, felid)
 
-        emptyBoard(felid)
+        emptyBoard(felid, all_ships)
 
         #update_board(felid, row, col, all_ships)
             #print_battlefield_percentages(felid, total)

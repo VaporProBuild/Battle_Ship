@@ -39,8 +39,7 @@ def button_callback(button, label_text, arr, copies):
 	arr[button.row][button.col] = 'X'
 	label_text.set(f"Button at row {button.row}, column {button.col} was clicked")
 	button.set_text(f"{arr[button.row][button.col]}")
-	emptyBoard(arr)
-	xrow_and_col(arr, ships)
+	emptyBoard(arr, ships)
 	button.update_all_texts(" ", arr)
 	for all in copies:
 		print(all)
@@ -74,6 +73,7 @@ def create_table(root, sob, arr, copies):
 	list_frame.grid(row=1, column=sob+1, rowspan=sob+1, sticky='n')
 	label_list_ships = tk.Label(list_frame, text="List of ships Remaining")
 	label_list_ships.pack()
+
 	for ship in ships:
 		shp_label = tk.Label(list_frame, text=f"{boat_names[ship]} ({ship} cells)", width=15, height=1)
 		shp_label.pack()
@@ -119,6 +119,7 @@ def undo(master, arr, copies):
 def sunk_ship(master, ships_remaining, arr):
 	def remove_ship(ship):
 		ships_remaining.remove(ship)
+		emptyBoard(arr, ships_remaining)
 		tb = TableButton(master, 0, 0)
 		tb.button_list.pop()
 		tb.update_all_texts("", arr)
