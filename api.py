@@ -36,7 +36,7 @@ boat_names = {
 
 alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','X','Y','Z']
 
-size_of_board = 5
+size_of_board = 15
 
 carrier = 5
 battleship = 4

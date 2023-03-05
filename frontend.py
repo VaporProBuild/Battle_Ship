@@ -45,6 +45,14 @@ def button_callback(button, label_text, arr, copies):
 		print(all)
 		print()
 
+def str_ships_sidebar(ships):
+	if len(ships) == 0:
+		return "------------------------\n!WOOT WOOT U WIN!\n------------------------"
+	lst = "List of ships Remaining\n------------------------\n"
+	for ship in ships:
+		lst += (f"{boat_names[ship]} ({ship} cells)\n")
+	return lst
+
 #Inital call that creates and itilizes everything
 def create_table(root, sob, arr, copies):
 	label_text = tk.StringVar()
@@ -69,14 +77,14 @@ def create_table(root, sob, arr, copies):
 	# Update the frame to get its current size
 	root.update()
 
-	list_frame = tk.Frame(root, width=400, height=len(ships) * 20)
-	list_frame.grid(row=1, column=sob+1, rowspan=sob+1, sticky='n')
-	label_list_ships = tk.Label(list_frame, text="List of ships Remaining")
-	label_list_ships.pack()
+	#list_frame = tk.Frame(root, width=400, height=len(ships) * 20)
+	#list_frame.grid(row=1, column=sob+1, rowspan=sob+1, sticky='n')
+	label_list_ships = tk.Label(root, text=str_ships_sidebar(ships))
+	label_list_ships.grid(row=1, column=sob+1, rowspan=sob+1, sticky='n')
 
-	for ship in ships:
-		shp_label = tk.Label(list_frame, text=f"{boat_names[ship]} ({ship} cells)", width=15, height=1)
-		shp_label.pack()
+#	for ship in ships:
+#		shp_label = tk.Label(list_frame, text=f"{boat_names[ship]} ({ship} cells)", width=15, height=1)
+	#	shp_label.pack()
 	root.update()
 	
 	label = tk.Label(root, textvariable=label_text, width = root.winfo_width(), height = 2, anchor="center", justify="center")
@@ -88,7 +96,7 @@ def create_table(root, sob, arr, copies):
 	hit_btn = tk.Button(btn_frame, text="HIT!", width = 10, height = 1, anchor="center", justify="center")
 	hit_btn.pack(side=tk.LEFT, padx=10)
 
-	sunk_btn = tk.Button(btn_frame, command=lambda:sunk_ship(root, ships, arr), text="SUNK!", width = 10, height = 1, anchor="center", justify="center")
+	sunk_btn = tk.Button(btn_frame, command=lambda:sunk_ship(root, ships, arr, label_list_ships), text="SUNK!", width = 10, height = 1, anchor="center", justify="center")
 	sunk_btn.pack(side=tk.LEFT, padx=10)
 
 	undo_btn = tk.Button(root, command=lambda:undo(root, arr, copies), text="UNDO", width = 10, height = 1, anchor="center", justify="center")
@@ -116,13 +124,14 @@ def undo(master, arr, copies):
 	tb.update_all_texts("", arr)
 
 #When the user shinks a ship they press this button
-def sunk_ship(master, ships_remaining, arr):
+def sunk_ship(master, ships_remaining, arr, label_list_ships):
 	def remove_ship(ship):
 		ships_remaining.remove(ship)
 		emptyBoard(arr, ships_remaining)
 		tb = TableButton(master, 0, 0)
 		tb.button_list.pop()
 		tb.update_all_texts("", arr)
+		label_list_ships.config(text=str_ships_sidebar(ships_remaining))
 		popup.destroy()
 
 	popup = tk.Toplevel()
