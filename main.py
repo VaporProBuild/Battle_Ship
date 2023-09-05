@@ -1,9 +1,9 @@
 import tkinter as tk
 import copy
-from api import size_of_board as sob
-from api import alpha, boat_names
-from api import all_ships as ships
-from api import initialize_battlefield, xrow_and_col, emptyBoard
+from backend.api import size_of_board as sob
+from backend.api import alpha, boat_names
+from backend.api import all_ships as ships
+from backend.api import initialize_battlefield, xrow_and_col, emptyBoard
 
 
 class TableButton(tk.Button):

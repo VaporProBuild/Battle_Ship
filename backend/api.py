@@ -1,6 +1,4 @@
 # api.py
-import copy
-
 """
 API for the classic battleship game. The first block of code is meant for the 
 declearation of global constantants that are used in the main testing and or
@@ -56,7 +54,7 @@ alpha = [
     "Z",
 ]
 
-size_of_board = 15
+size_of_board = 5
 
 carrier = 5
 battleship = 4
