@@ -54,7 +54,7 @@ alpha = [
     "Z",
 ]
 
-size_of_board = 5
+size_of_board = 10
 
 carrier = 5
 battleship = 4
