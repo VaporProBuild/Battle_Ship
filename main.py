@@ -3,7 +3,7 @@ import copy
 from backend.api import size_of_board as sob
 from backend.api import alpha, boat_names
 from backend.api import all_ships as ships
-from backend.api import initialize_battlefield, xrow_and_col, emptyBoard
+from backend.api import initialize_battlefield, row_and_col, emptyBoard
 
 
 class TableButton(tk.Button):
@@ -55,7 +55,7 @@ def str_ships_sidebar(ships):
     return lst
 
 
-# Inital call that creates and itilizes everything
+# Initial call that creates and itilizes everything
 def create_table(root, sob, arr, copies):
     label_text = tk.StringVar()
     label_text.set("Click a button to see its row and column index")
@@ -189,7 +189,7 @@ def main():
     all_battlefields = []
 
     felid = initialize_battlefield(sob)
-    total = xrow_and_col(felid, ships)
+    total = row_and_col(felid, ships)
 
     root = tk.Tk()
     height = 23 + sob * 62 + 90  # topbar + num_squares * length_squares + Bottom extension
